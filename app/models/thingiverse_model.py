@@ -1,7 +1,10 @@
+from app.logger import Logger
 import requests
 import time
 import os
 import re
+
+logger = Logger("thingiverse_model")
 
 class ThingiverseModel:
     __base_url = "https://www.thingiverse.com/thing:"
@@ -32,13 +35,33 @@ class ThingiverseModel:
             self.get_metadata()
 
     def get_metadata(self):
+        logger.debug(
+            "Starting thing metadata get",
+            extra={
+                "thing_id": self.thing_id
+            }
+        )
         response = None
         for i in range(4):
             temp_response = requests.get(self.thing_url)
             if temp_response.status_code == 200:
                 response = temp_response.text
                 self.thing_exists = True
+                logger.debug(
+                    "Got thing metadata",
+                    extra={
+                        "thing_id": self.thing_id
+                    }
+                )
                 break
+            logger.debug(
+                "Failed to get thing metadata... retrying",
+                extra={
+                    "thing_id": self.thing_id,
+                    "status": temp_response.status_code,
+                    "response": response
+                }
+            )
             time.sleep(self.retry_interval_seconds)
         self.metadata = response
 
@@ -50,6 +73,13 @@ class ThingiverseModel:
 
             if self.auto_download:
                 self.get_files_zip()
+        else:
+            logger.error(
+                "Failed to get thing metadata.",
+                extra={
+                    "thing_id": self.thing_id
+                }
+            )
         
     def get_files_zip(self, filename: str = None):
         output_file = filename

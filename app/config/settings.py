@@ -9,6 +9,8 @@ TELEGRAM_API_ID = os.getenv("TELEGRAM_API_ID")
 TELEGRAM_API_HASH = os.getenv("TELEGRAM_API_HASH")
 DOWNLOAD_PATH = os.getenv("DOWNLOAD_PATH")
 
+LOG_LEVEL = os.getenv("LOG_LEVEL", "info")
+
 DB_TYPE = os.getenv("DB_TYPE")
 DB_HOST = os.getenv("DB_HOST")
 DB_USER = os.getenv("DB_USER")
