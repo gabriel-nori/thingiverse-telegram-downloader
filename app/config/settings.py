@@ -3,7 +3,7 @@ import os
 
 env_file_path = os.getcwd() + "/.env"
 
-env_loaded = load_dotenv(dotenv_path=env_file_path)
+env_loaded = load_dotenv(dotenv_path=env_file_path, override=True)
 
 TELEGRAM_API_ID = os.getenv("TELEGRAM_API_ID")
 TELEGRAM_API_HASH = os.getenv("TELEGRAM_API_HASH")
